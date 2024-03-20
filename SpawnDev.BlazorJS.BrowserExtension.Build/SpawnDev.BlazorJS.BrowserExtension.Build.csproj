@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>10.0</LangVersion>
+		<OutDir>..\SpawnDev.BlazorJS.BrowserExtension\tasks\netstandard2.0</OutDir>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<Version>2.2.58</Version>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.8.3" />
+		<PackageReference Include="System.Text.Json" Version="8.0.1" />
+	</ItemGroup>
+
+</Project>

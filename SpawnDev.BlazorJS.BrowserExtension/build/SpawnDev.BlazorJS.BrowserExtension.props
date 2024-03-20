@@ -1,0 +1,24 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<!-- Required to have wwwroot added to the output and available via _content folder -->
+	<Import Project="Microsoft.AspNetCore.StaticWebAssets.props" Condition="Exists('$(MSBuildThisFileDirectory).\Microsoft.AspNetCore.StaticWebAssets.props')" />
+	
+	<PropertyGroup>
+		<!-- Browser sxtensions have stricter ContentSecurityPolicy rules so this flag tells SpawnDev.BlazorJS.WebWorkers to patch the Blazor framework at build time instead of doing it at runtime -->
+		<WebWorkerPatchFramework>true</WebWorkerPatchFramework>
+
+
+		<SpawnDevBrowserExtensionPlatforms Condition="'$(SpawnDevBrowserExtensionPlatforms)' == ''">Chrome;Firefox</SpawnDevBrowserExtensionPlatforms>
+
+		<SpawnDevBrowserExtensionBuildAssetsPath Condition="'$(SpawnDevBrowserExtensionBuildAssetsPath)' == ''">wwwroot</SpawnDevBrowserExtensionBuildAssetsPath>
+		<SpawnDevBrowserExtensionBuildOutputPath Condition="'$(SpawnDevBrowserExtensionBuildOutputPath)' == ''">$(Configuration)Extension</SpawnDevBrowserExtensionBuildOutputPath>
+		<!--  -->
+		<_DebugSpawnDevBrowserExtensionBuildTasks Condition="'$(_DebugSpawnDevBrowserExtensionBuildTasks)' == ''">false</_DebugSpawnDevBrowserExtensionBuildTasks>
+		<_SpawnDevBrowserExtensionBuildTasksAssembly Condition="'$(_SpawnDevBrowserExtensionBuildTasksAssembly)' == ''">$(MSBuildThisFileDirectory)..\tasks\netstandard2.0\SpawnDev.BlazorJS.BrowserExtension.Build.dll</_SpawnDevBrowserExtensionBuildTasksAssembly>
+	</PropertyGroup>
+
+	<UsingTask TaskName="SpawnDev.BlazorJS.BrowserExtension.Build.Tasks.PostBuildTask" AssemblyFile="$(_SpawnDevBrowserExtensionBuildTasksAssembly)" />
+	
+	<UsingTask TaskName="SpawnDev.BlazorJS.BrowserExtension.Build.Tasks.PostPublishTask" AssemblyFile="$(_SpawnDevBrowserExtensionBuildTasksAssembly)" />
+
+</Project>

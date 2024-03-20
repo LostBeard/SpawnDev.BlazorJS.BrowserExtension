@@ -1,0 +1,81 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<PropertyGroup>
+		<_SpawnDevBrowserExtensionBuildContentDirectory>$(MSBuildThisFileDirectory)..\buildcontent</_SpawnDevBrowserExtensionBuildContentDirectory>
+	</PropertyGroup>
+
+	<Target Name="SpawnDevBrowserExtensionBuildBeforeTargetsBeforeBuild" BeforeTargets="BeforeBuild">
+		<!-- <Message Importance="high" Text="********************** SpawnDev.BlazorJS.SpawnDevBrowserExtension BeforeTargets BeforeBuild" /> -->
+	</Target>
+	<Target Name="SpawnDevBrowserExtensionBuildAfterTargetsBeforeBuild" AfterTargets="BeforeBuild">
+		<!-- <Message Importance="high" Text="********************** SpawnDev.BlazorJS.SpawnDevBrowserExtension AfterTargets BeforeBuild" /> -->
+	</Target>
+	
+	<Target Name="SpawnDevBrowserExtensionBuildBeforeTargetsAfterBuild" BeforeTargets="AfterBuild">
+		<!-- <Message Importance="high" Text="********************** SpawnDev.BlazorJS.SpawnDevBrowserExtension BeforeTargets AfterBuild" /> -->
+	</Target>
+	<Target Name="SpawnDevBrowserExtensionBuildAfterTargetsAfterBuild" AfterTargets="AfterBuild">
+		<!-- <Message Importance="high" Text="********************** SpawnDev.BlazorJS.SpawnDevBrowserExtension AfterTargets AfterBuild" /> -->
+		<PropertyGroup>
+			<_SpawnDevBrowserExtensionBuild_Project_Assets_Directory>$(ProjectDir)$(SpawnDevBrowserExtensionBuildAssetsPath)</_SpawnDevBrowserExtensionBuild_Project_Assets_Directory>
+			<_SpawnDevBrowserExtensionBuild_Project_Assets_ManifestJson_FilePath>$(_SpawnDevBrowserExtensionBuild_Project_Assets_Directory)\manifest.json</_SpawnDevBrowserExtensionBuild_Project_Assets_ManifestJson_FilePath>
+			<_SpawnDevBrowserExtensionBuild_Project_BuildOutput_Assets_Directory>$(TargetDir)$(SpawnDevBrowserExtensionBuildAssetsPath)</_SpawnDevBrowserExtensionBuild_Project_BuildOutput_Assets_Directory>
+			<_SpawnDevBrowserExtensionBuild_Project_BuildOutput_SpawnDevBrowserExtensionBuild_Directory>$(TargetDir)$(SpawnDevBrowserExtensionBuildOutputPath)</_SpawnDevBrowserExtensionBuild_Project_BuildOutput_SpawnDevBrowserExtensionBuild_Directory>
+			<_SpawnDevBrowserExtensionBuild_Project_BuildOutput_SpawnDevBrowserExtensionBuild_OriginalFramework_Directory>$(_SpawnDevBrowserExtensionBuild_Project_BuildOutput_SpawnDevBrowserExtensionBuild_Directory)\_framework</_SpawnDevBrowserExtensionBuild_Project_BuildOutput_SpawnDevBrowserExtensionBuild_OriginalFramework_Directory>
+			<!-- StaticWebAssets - The StaticWebAssets manifest is created by the dotnet SDK and read by the DevServer.
+				Source:
+				- Current/.Net 8 https://github.com/dotnet/aspnetcore/blob/main/src/Components/WebAssembly/DevServer/src/Server/Program.cs
+				- .Net 7 https://github.com/dotnet/aspnetcore/blob/v7.0.12/src/Components/WebAssembly/DevServer/src/Server/Program.cs
+				- .Net 6 https://github.com/dotnet/aspnetcore/blob/v6.0.23/src/Components/WebAssembly/DevServer/src/Server/Program.cs
+			-->
+			<_SpawnDevBrowserExtensionBuild_Project_BuildOutput_StaticWebAssets_Manifest_FilePath>$(TargetDir)$(ProjectName).staticwebassets.runtime.json</_SpawnDevBrowserExtensionBuild_Project_BuildOutput_StaticWebAssets_Manifest_FilePath>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="SpawnDevBrowserExtensionBuildBeforeTargetsBuild" BeforeTargets="Build">
+		<!-- <Message Importance="high" Text="********************** SpawnDev.BlazorJS.SpawnDevBrowserExtension BeforeTargets Build" /> -->
+	</Target>
+	<Target Name="SpawnDevBrowserExtensionBuildAfterTargetsBuild" AfterTargets="Build">
+		<!-- <Message Importance="high" Text="********************** SpawnDev.BlazorJS.SpawnDevBrowserExtension AfterTargets Build" /> -->
+		<PostBuildTask
+			PatchFramework="$(WebWorkerPatchFramework)"
+			StaticWebAsset="@(StaticWebAsset)"
+			ProjectDir="$(MSBuildProjectDirectory)"
+			OutputPath="$(OutputPath)"
+			PublishMode="false"
+			BasePath="$(StaticWebAssetBasePath)"
+			IntermediateOutputPath="$(IntermediateOutputPath)"
+			PackageContentDir="$(_SpawnDevBrowserExtensionBuildContentDirectory)"
+			DebugSpawnDevBrowserExtensionBuildTasks="$(_DebugSpawnDevBrowserExtensionBuildTasks)"
+			ExtensionPlatforms="$(SpawnDevBrowserExtensionPlatforms)"
+			>
+		</PostBuildTask>
+	</Target>
+
+	<Target Name="SpawnDevBrowserExtensionBuildBeforeTargetsAfterPublish" BeforeTargets="AfterPublish">
+		<!-- <Message Importance="high" Text="********************** SpawnDev.BlazorJS.SpawnDevBrowserExtension BeforeTargets AfterPublish" /> -->
+	</Target>
+	<Target Name="SpawnDevBrowserExtensionBuildAfterTargetsAfterPublish" AfterTargets="AfterPublish">
+		<!-- <Message Importance="high" Text="********************** SpawnDev.BlazorJS.SpawnDevBrowserExtension AfterTargets AfterPublish" /> -->
+	</Target>
+	<Target Name="SpawnDevBrowserExtensionBuildAfterWebWorkerBuildAfterTargetsAfterPublish" AfterTargets="WebWorkerBuildAfterTargetsAfterPublish">
+		<!-- <Message Importance="high" Text="********************** SpawnDev.BlazorJS.SpawnDevBrowserExtension AfterTargets AfterPublish" /> -->
+		<PostPublishTask
+			PatchFramework="$(WebWorkerPatchFramework)"
+			StaticWebAsset="@(StaticWebAsset)"
+			ProjectDir="$(MSBuildProjectDirectory)"
+			OutputPath="$(PublishDir)"
+			PublishMode="true"
+			BasePath="$(StaticWebAssetBasePath)"
+			IntermediateOutputPath="$(IntermediateOutputPath)"
+			PackageContentDir="$(_SpawnDevBrowserExtensionBuildContentDirectory)"
+			DebugSpawnDevBrowserExtensionBuildTasks="$(_DebugSpawnDevBrowserExtensionBuildTasks)"
+			ExtensionPlatforms="$(SpawnDevBrowserExtensionPlatforms)"
+			>
+		</PostPublishTask>
+	</Target>
+
+	<Target Name="SpawnDevBrowserExtensionBuildAfterTargetsAfterClean" AfterTargets="AfterClean">
+		<!-- <Message Importance="high" Text="********************** SpawnDev.BlazorJS.SpawnDevBrowserExtension AfterTargets AfterClean" /> -->
+	</Target>
+</Project>
