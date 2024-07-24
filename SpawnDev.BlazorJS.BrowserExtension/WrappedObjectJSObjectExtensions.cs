@@ -29,7 +29,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// <returns></returns>
         public static T WrappedObjectDecon<T>(this JSObject _this) => _this.JSRef!.Call<T>("__wrappedObjectDecon");
         /// <summary>
-        /// Requests and unwrapped (direct) version of the object<br />
+        /// Requests an unwrapped (direct) version of the object<br />
         /// This call may fail if the main side prevents the object from being returned
         /// </summary>
         /// <typeparam name="T"></typeparam>

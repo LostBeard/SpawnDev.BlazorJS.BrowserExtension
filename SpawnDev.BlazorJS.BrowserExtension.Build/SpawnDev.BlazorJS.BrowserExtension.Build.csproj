@@ -5,7 +5,7 @@
 		<LangVersion>10.0</LangVersion>
 		<OutDir>..\SpawnDev.BlazorJS.BrowserExtension\tasks\netstandard2.0</OutDir>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-		<Version>2.2.58</Version>
+		<Version>2.3.0-alpha.1</Version>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -18,7 +18,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.8.3" />
-		<PackageReference Include="System.Text.Json" Version="8.0.1" />
+		<PackageReference Include="System.Text.Json" Version="8.0.4" />
 	</ItemGroup>
 
 </Project>

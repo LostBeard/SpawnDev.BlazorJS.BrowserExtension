@@ -4,6 +4,8 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
 {
     public class ContentBridgeService : IAsyncBackgroundService
     {
+        public Task Ready => _Ready ??= InitAsync();
+        private Task? _Ready = null;
         string MessageKey = Guid.NewGuid().ToString();
         string instanceId = "";
         string remoteInstanceId = "";
@@ -19,7 +21,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
             SyncDispatcher = new ExtensionContentBridge(new ExtensionContentBridgeOptions(instanceId, remoteInstanceId));
             JS.Set("_syncDispatcher", SyncDispatcher);
         }
-        public async Task InitAsync()
+        async Task InitAsync()
         {
             await ContentSiteContextScriptLoader("_content/SpawnDev.BlazorJS.BrowserExtension/content-bridge.js");
             await ContentSiteContextScriptLoader($"_content/SpawnDev.BlazorJS.BrowserExtension/content-bridge-loader.js?instanceId={remoteInstanceId}&remoteInstanceId={instanceId}");
