@@ -1,6 +1,4 @@
-﻿using SpawnDev.BlazorJS;
-
-namespace SpawnDev.BlazorJS.BrowserExtension
+﻿namespace SpawnDev.BlazorJS.BrowserExtension
 {
     /// <summary>
     /// Adds a few methods to JSObject instances that allow them to access the underlying proxy (if one)
@@ -12,7 +10,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// </summary>
         /// <param name="_this"></param>
         /// <returns></returns>
-        public static bool IsWrappedObject(this JSObject _this) => !_this.JSRef!.PropertyIsUndefined("__wrappedObjectRelease");
+        public static bool IsWrappedObject(this JSObject _this) => !_this.JSRef!.IsUndefined("__wrappedObjectRelease");
         /// <summary>
         /// Releases the object on the main content side
         /// </summary>

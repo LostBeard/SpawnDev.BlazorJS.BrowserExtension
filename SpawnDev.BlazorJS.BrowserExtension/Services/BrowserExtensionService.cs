@@ -9,13 +9,15 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
     {
         private static BlazorJSRuntime _JS => BlazorJSRuntime.JS;
         // chrome
-        private static Lazy<Chrome?> _Chrome = new Lazy<Chrome?>(() => _JS.Get<Chrome?>("chrome"));
+        private static Lazy<Chrome?> _Chrome = new Lazy<Chrome?>(() =>
+        {
+            if (!_JS.IsUndefined("browser.runtime")) return _JS.Get<Chrome?>("browser");
+            else if (!_JS.IsUndefined("chrome.runtime")) return _JS.Get<Chrome?>("chrome");
+            return null;
+        });
         private static Lazy<ChromeRuntime?> _ChromeRuntime = new Lazy<ChromeRuntime?>(() => _Chrome.Value?.Runtime);
-        // browser
-        private static Lazy<Browser?> _Browser = new Lazy<Browser?>(() => _JS.Get<Browser?>("browser"));
-        private static Lazy<BrowserRuntime?> _BrowserRuntime = new Lazy<BrowserRuntime?>(() => _Browser.Value?.Runtime);
         // extension id
-        private static Lazy<string> _ExtensionId = new Lazy<string>(() => _BrowserRuntime.Value?.Id ?? _ChromeRuntime.Value?.Id ?? "");
+        private static Lazy<string> _ExtensionId = new Lazy<string>(() => _ChromeRuntime.Value?.Id ?? "");
         // extension mode
         private static Lazy<ExtensionMode> _ExtensionMode = new Lazy<ExtensionMode>(() => GetExtensionMode(_JS.Get<string>("location.href"), _ExtensionId.Value, _JS.GlobalScope));
         private BlazorJSRuntime JS;
@@ -39,17 +41,9 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
         /// </summary>
         public string ExtensionId => _ExtensionId.Value;
         /// <summary>
-        /// The global instance of browser or null
-        /// </summary>
-        public Browser? Browser => _Browser.Value;
-        /// <summary>
         /// The global instance of chrome or null
         /// </summary>
         public Chrome? Chrome => _Chrome.Value;
-        /// <summary>
-        /// browser.runtime or null
-        /// </summary>
-        public BrowserRuntime? BrowserRuntime => _BrowserRuntime.Value;
         /// <summary>
         /// chrome.runtime or null
         /// </summary>
@@ -96,7 +90,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
                 window.AddEventListener<LocationChangeEvent>("locationChange", Window_LocationChange);
             }
         }
-        string? _GetURL(string path) => BrowserRuntime?.GetURL(path) ?? ChromeRuntime?.GetURL(path);
+        string? _GetURL(string path) => ChromeRuntime?.GetURL(path);
         void Window_LocationChange(LocationChangeEvent locationChangeEvent)
         {
             Location = locationChangeEvent.Detail;
@@ -115,7 +109,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
         /// <returns></returns>
         public bool CheckContextValid()
         {
-            return BrowserRuntime?.Id != null;
+            return ChromeRuntime?.Id != null;
         }
         /// <summary>
         /// Returns true if the context was valid and has been invalidated
@@ -123,7 +117,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
         /// <returns></returns>
         public bool CheckContextInvalided()
         {
-            return !string.IsNullOrEmpty(ExtensionId) && BrowserRuntime?.Id == null;
+            return !string.IsNullOrEmpty(ExtensionId) && ChromeRuntime?.Id == null;
         }
         /// <summary>
         /// Returns the extension mode.

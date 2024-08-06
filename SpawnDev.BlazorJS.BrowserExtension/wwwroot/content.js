@@ -3,7 +3,7 @@
 // Tolerador
 // Loads Blazor WASM app content.html into the extension "content" context of an existing webpage
 // uses browser-polyfill - https://github.com/mozilla/webextension-polyfill
-// tested in Chrome Windows
+// tested in Chrome and Firefox on Windows
 // not tested in other browsers yet
 var initBlazorContent = async function () {
     var verboseMode = false;
@@ -11,6 +11,10 @@ var initBlazorContent = async function () {
         if (!verboseMode) return;
         console.log(...arguments);
     };
+    // Some websites have ContentSecurityPolicies that prevent webassembly
+    // This will cause Blazor loading to fail
+    // The `securitypolicyviolation` event will fire when this error occurs
+    // To work around the issue, we can message the background script and request a ContentSecurityPolicy modification to allow WebAssembly
     function onSecurityPolicyViolation(e) {
         // chrome - e.blockedURI === "wasm-eval"
         if ((e.blockedURI === "wasm-eval" || e.blockedURI === "wasm-unsafe-eval")
@@ -179,8 +183,9 @@ var initBlazorContent = async function () {
             resp = await fetchOrig(resource, options);
         }
         if (xrayWrapped) {
-            // In Firefox extension content mode, the object returned from Response.json is xraywrapped and will throw an exception if modified
-            // return unwrapped version
+            // In Firefox extension content mode, the object returned from Response.json is xraywrapped and will throw an exception if modified,
+            // which Blazor will do when starting up.
+            // To fix this return unwrapped version.
             var jsonOrig = resp.json.bind(resp);
             var blobOrig = resp.blob.bind(resp);
             var arrayBufferOrig = resp.arrayBuffer.bind(resp);

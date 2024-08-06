@@ -3,13 +3,24 @@ using SpawnDev.BlazorJS;
 
 namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
 {
+    /// <summary>
+    /// Enables extensions to store and retrieve data, and listen for changes to stored items.<br/>
+    /// https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage
+    /// </summary>
     public class ChromeStorage : JSObject
     {
+        /// <summary>
+        /// Deserialization constructor
+        /// </summary>
+        /// <param name="_ref"></param>
         public ChromeStorage(IJSInProcessObjectReference _ref) : base(_ref) { }
-        public StorageArea Sync => JSRef.Get<StorageArea>("sync");
-        public StorageArea Local => JSRef.Get<StorageArea>("local");
-        public StorageArea Managed => JSRef.Get<StorageArea>("managed");
-        public StorageArea Session => JSRef.Get<StorageArea>("session");
+        public StorageArea Sync => JSRef!.Get<StorageArea>("sync");
+        /// <summary>
+        /// Represents the local storage area. Items in local storage are local to the machine the extension was installed on.
+        /// </summary>
+        public StorageArea Local => JSRef!.Get<StorageArea>("local");
+        public StorageArea Managed => JSRef!.Get<StorageArea>("managed");
+        public StorageArea Session => JSRef!.Get<StorageArea>("session");
 
 
         #region Events

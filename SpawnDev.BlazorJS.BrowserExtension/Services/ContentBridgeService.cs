@@ -2,6 +2,9 @@
 
 namespace SpawnDev.BlazorJS.BrowserExtension.Services
 {
+    /// <summary>
+    /// ContentBridgeService allows accessing the web site via proxies
+    /// </summary>
     public class ContentBridgeService : IAsyncBackgroundService
     {
         public Task Ready => _Ready ??= InitAsync();
@@ -10,6 +13,9 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
         string instanceId = "";
         string remoteInstanceId = "";
         BrowserExtensionService BrowserExtensionService;
+        /// <summary>
+        /// ContentBridge Dispatcher
+        /// </summary>
         public ExtensionContentBridge SyncDispatcher { get; private set; }
         BlazorJSRuntime JS;
         public ContentBridgeService(BlazorJSRuntime js, BrowserExtensionService browserExtensionService)
@@ -23,10 +29,13 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
         }
         async Task InitAsync()
         {
-            await ContentSiteContextScriptLoader("_content/SpawnDev.BlazorJS.BrowserExtension/content-bridge.js");
-            await ContentSiteContextScriptLoader($"_content/SpawnDev.BlazorJS.BrowserExtension/content-bridge-loader.js?instanceId={remoteInstanceId}&remoteInstanceId={instanceId}");
+            if (BrowserExtensionService.ExtensionMode == ExtensionMode.Content)
+            {
+                // This loads the other side of the content-bridge into the website
+                await ContentSiteContextScriptLoader("_content/SpawnDev.BlazorJS.BrowserExtension/content-bridge.js");
+                await ContentSiteContextScriptLoader($"_content/SpawnDev.BlazorJS.BrowserExtension/content-bridge-loader.js?instanceId={remoteInstanceId}&remoteInstanceId={instanceId}");
+            }
         }
-
         async Task ContentSiteContextScriptLoader(string jsFile)
         {
             var fileUrl = BrowserExtensionService.GetURL(jsFile);
