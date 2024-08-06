@@ -3,7 +3,8 @@
 namespace SpawnDev.BlazorJS.BrowserExtension.Services
 {
     /// <summary>
-    /// ContentBridgeService allows accessing the web site via proxies
+    /// ContentBridgeService lets the Blazor App running in an Extension Content mode, which has an isolated Javascript scope,
+    /// access the web page's Javascript scope via proxies<br/>
     /// </summary>
     public class ContentBridgeService : IAsyncBackgroundService
     {
@@ -16,7 +17,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
         /// <summary>
         /// ContentBridge Dispatcher
         /// </summary>
-        public ExtensionContentBridge SyncDispatcher { get; private set; }
+        public ExtensionContentBridge? SyncDispatcher { get; private set; }
         BlazorJSRuntime JS;
         public ContentBridgeService(BlazorJSRuntime js, BrowserExtensionService browserExtensionService)
         {
@@ -24,8 +25,11 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
             instanceId = $"{MessageKey}-a";
             remoteInstanceId = $"{MessageKey}-b";
             BrowserExtensionService = browserExtensionService;
-            SyncDispatcher = new ExtensionContentBridge(new ExtensionContentBridgeOptions(instanceId, remoteInstanceId));
-            JS.Set("_syncDispatcher", SyncDispatcher);
+            if (BrowserExtensionService.ExtensionMode == ExtensionMode.Content)
+            {
+                SyncDispatcher = new ExtensionContentBridge(new ExtensionContentBridgeOptions(instanceId, remoteInstanceId));
+                JS.Set("_syncDispatcher", SyncDispatcher);
+            }
         }
         async Task InitAsync()
         {

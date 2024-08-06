@@ -4,7 +4,7 @@
 		<TargetFrameworks>net8.0;net7.0;net6.0</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Version>2.3.0-alpha.22</Version>
+		<Version>2.3.0-alpha.24</Version>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<EmbedAllSources>true</EmbedAllSources>
@@ -76,7 +76,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="SpawnDev.BlazorJS.WebWorkers" Version="2.5.3" />
+		<PackageReference Include="SpawnDev.BlazorJS.WebWorkers" Version="2.5.4" />
 	</ItemGroup>
 
 	<ItemGroup>

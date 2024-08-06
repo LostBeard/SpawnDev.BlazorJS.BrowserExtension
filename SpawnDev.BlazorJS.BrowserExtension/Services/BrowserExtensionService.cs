@@ -11,8 +11,8 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
         // chrome
         private static Lazy<Chrome?> _Chrome = new Lazy<Chrome?>(() =>
         {
-            if (!_JS.IsUndefined("browser.runtime")) return _JS.Get<Chrome?>("browser");
-            else if (!_JS.IsUndefined("chrome.runtime")) return _JS.Get<Chrome?>("chrome");
+            if (!_JS.IsUndefined("browser?.runtime")) return _JS.Get<Chrome?>("browser");
+            else if (!_JS.IsUndefined("chrome?.runtime")) return _JS.Get<Chrome?>("chrome");
             return null;
         });
         private static Lazy<ChromeRuntime?> _ChromeRuntime = new Lazy<ChromeRuntime?>(() => _Chrome.Value?.Runtime);
