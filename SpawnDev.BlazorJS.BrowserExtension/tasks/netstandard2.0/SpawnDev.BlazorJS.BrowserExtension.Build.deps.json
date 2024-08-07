@@ -7,7 +7,7 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "SpawnDev.BlazorJS.BrowserExtension.Build/2.3.0-alpha.1": {
+      "SpawnDev.BlazorJS.BrowserExtension.Build/2.5.5-alpha.1": {
         "dependencies": {
           "Microsoft.Build.Utilities.Core": "17.8.3",
           "NETStandard.Library": "2.0.3",
@@ -235,7 +235,7 @@
     }
   },
   "libraries": {
-    "SpawnDev.BlazorJS.BrowserExtension.Build/2.3.0-alpha.1": {
+    "SpawnDev.BlazorJS.BrowserExtension.Build/2.5.5-alpha.1": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

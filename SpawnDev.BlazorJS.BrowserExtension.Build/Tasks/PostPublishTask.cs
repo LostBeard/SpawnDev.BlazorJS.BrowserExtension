@@ -96,6 +96,15 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Build.Tasks
             //
             return true;
         }
+        static JsonSerializerOptions DefaultJsonSerializerOptions { get; set; } = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            PropertyNameCaseInsensitive = false,
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            ReadCommentHandling = JsonCommentHandling.Skip,
+            AllowTrailingCommas = true,
+        };
         void PublishPlatform(string platform)
         {
             var outputWwwrootPath = Path.GetFullPath(Path.Combine(OutputPath, "wwwroot"));
@@ -117,10 +126,10 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Build.Tasks
             if (!string.IsNullOrEmpty(manifestPlatformSrcPath) && File.Exists(manifestPlatformSrcPath))
             {
                 var manifestPlatformStr = File.ReadAllText(manifestPlatformSrcPath);
-                var manifestCommon = JsonSerializer.Deserialize<JsonNode>(manifestStr, new JsonSerializerOptions { AllowTrailingCommas = true, ReadCommentHandling = JsonCommentHandling.Skip }).AsObject();
-                var manifestPlatform = JsonSerializer.Deserialize<JsonNode>(manifestPlatformStr, new JsonSerializerOptions { AllowTrailingCommas = true, ReadCommentHandling = JsonCommentHandling.Skip }).AsObject();
+                var manifestCommon = JsonSerializer.Deserialize<JsonNode>(manifestStr, DefaultJsonSerializerOptions).AsObject();
+                var manifestPlatform = JsonSerializer.Deserialize<JsonNode>(manifestPlatformStr, DefaultJsonSerializerOptions).AsObject();
                 var manifestFinal = manifestCommon.Merge(manifestPlatform);
-                manifestStr = manifestFinal.ToJsonString(new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
+                manifestStr = manifestFinal.ToJsonString(DefaultJsonSerializerOptions);
             }
             // remove all manifests from app folder
             manifestPaths.ForEach(o => File.Delete(o));
