@@ -20,7 +20,7 @@ SpawnDev.BlazorJS.BrowserExtension adds the ability for Blazor WASM to run as a 
   - Extension, Runtime, Tabs, Windows, Storage, etc
 
 
-**SpawnDev.BlazorJS.BrowserExtension** uses:  
+### Dependencies:  
 - [SpawnDev.BlazorJS](https://github.com/LostBeard/SpawnDev.BlazorJS) to allow full access to the Javascript environment, and Javascript class wrapping.
 - [SpawnDev.BlazorJS.WebWorkers](https://github.com/LostBeard/SpawnDev.BlazorJS.WebWorkers) to allow running Blazor WebAssembly in any web browser context, and inter-context communication.
 
