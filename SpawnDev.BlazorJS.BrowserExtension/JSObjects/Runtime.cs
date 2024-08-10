@@ -1,8 +1,39 @@
 ﻿using Microsoft.JSInterop;
 using SpawnDev.BlazorJS.JSObjects;
+using SpawnDev.BlazorJS.JsonConverters;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
 {
+    public class EnumStringConverter<T> : JsonConverter<T> where T : struct, Enum
+    {
+        /// <summary>
+        /// Returns true if the type can be converted
+        /// </summary>
+        public override bool CanConvert(Type typeToConvert)
+        {
+            return typeToConvert.IsEnum;
+        }
+        /// <summary>
+        /// Reads the type value from the Json reader
+        /// </summary>
+        public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            var valueString = JsonSerializer.Deserialize<string?>(ref reader);
+            if (string.IsNullOrEmpty(valueString)) return default;
+            var enumString = new EnumString<T>(valueString);
+            return enumString.Enum ?? default;
+        }
+        /// <summary>
+        /// Writes the type value to the Json reader
+        /// </summary>
+        public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+        {
+            var enumString = new EnumString<T>(value);
+            JsonSerializer.Serialize(writer, enumString == null ? null : enumString.String);
+        }
+    }
     /// <summary>
     /// This module provides information about your extension and the environment it's running in.<br/>
     /// It also provides messaging APIs enabling you to:<br/>
@@ -12,12 +43,12 @@ namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
     /// https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime<br/>
     /// https://developer.chrome.com/docs/extensions/reference/api/runtime
     /// </summary>
-    public class ChromeRuntime : JSObject
+    public class Runtime : JSObject
     {
         /// <summary>
         /// Deserialization constructor
         /// </summary>
-        public ChromeRuntime(IJSInProcessObjectReference _ref) : base(_ref) { }
+        public Runtime(IJSInProcessObjectReference _ref) : base(_ref) { }
         /// <summary>
         /// The ID of the extension.
         /// </summary>
@@ -26,6 +57,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
         /// This value is set when an asynchronous function has an error condition that it needs to report to its caller.
         /// </summary>
         public Error? LastError => JSRef!.Get<Error?>("lastError");
+        #region Methods
         /// <summary>
         /// Retrieves the Window object for the background page running inside the current extension.
         /// </summary>
@@ -102,6 +134,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
         /// <param name="message"></param>
         /// <returns></returns>
         public Task<T> SendMessage<T>(string extensionId, object message) => JSRef!.CallAsync<T>("sendMessage", extensionId, message);
+        #endregion
         #region Events
         /// <summary>
         /// Fired when a profile that has this extension installed first starts up. This event is not fired when an incognito profile is started.
@@ -110,7 +143,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
         /// <summary>
         /// Fired when the extension is first installed, when the extension is updated to a new version, and when the browser is updated to a new version.
         /// </summary>
-        public ActionEvent OnInstalled { get => JSRef!.Get<ActionEvent>("onInstalled"); set { } }
+        public ActionEvent<OnInstalledDetails> OnInstalled { get => JSRef!.Get<ActionEvent<OnInstalledDetails>>("onInstalled"); set { } }
         /// <summary>
         /// Sent to the event page just before the extension is unloaded. This gives the extension an opportunity to do some cleanup.
         /// </summary>
@@ -130,23 +163,27 @@ namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
         /// <summary>
         /// Fired when a connection is made with another extension.
         /// </summary>
-        public ActionEvent OnConnectExternal { get => JSRef!.Get<ActionEvent>("onConnectExternal"); set { } }
+        public ActionEvent<Port> OnConnectExternal { get => JSRef!.Get<ActionEvent<Port>>("onConnectExternal"); set { } }
         /// <summary>
-        /// Fired when a message is sent from either an extension process or a content script.
+        /// Fired when a message is sent from either an extension process or a content script.<br/>
+        /// To send a response synchronously, call sendResponse() before the listener function returns.<br/>
+        /// To send a response asynchronously, keep a reference to the sendResponse() argument and return true from the listener function. You will then be able to call sendResponse() after the listener function has returned.<br/>
         /// </summary>
-        public ActionEvent<JSObject, MessageSender, Function?> OnMessage { get => JSRef!.Get<ActionEvent<JSObject, MessageSender, Function?>>("onMessage"); set { } }
+        public FuncEvent<JSObject, MessageSender, Function?, bool> OnMessage { get => JSRef!.Get<FuncEvent<JSObject, MessageSender, Function?, bool>>("onMessage"); set { } }
         /// <summary>
         /// Fired when a message is sent from another extension. Cannot be used in a content script.
+        /// To send a response synchronously, call sendResponse() before the listener function returns.<br/>
+        /// To send a response asynchronously, keep a reference to the sendResponse() argument and return true from the listener function. You will then be able to call sendResponse() after the listener function has returned.<br/>
         /// </summary>
-        public ActionEvent OnMessageExternal { get => JSRef!.Get<ActionEvent>("onMessageExternal"); set { } }
+        public FuncEvent<JSObject, MessageSender, Function?, bool> OnMessageExternal { get => JSRef!.Get<FuncEvent<JSObject, MessageSender, Function?, bool>>("onMessageExternal"); set { } }
         /// <summary>
         /// Fired when a runtime performance issue is detected for the extension.
         /// </summary>
-        public ActionEvent OnPerformanceWarning { get => JSRef!.Get<ActionEvent>("onPerformanceWarning"); set { } }
+        public ActionEvent<OnPerformanceWarningDetails> OnPerformanceWarning { get => JSRef!.Get<ActionEvent<OnPerformanceWarningDetails>>("onPerformanceWarning"); set { } }
         /// <summary>
         /// Fired when the device needs to be restarted.
         /// </summary>
-        public ActionEvent OnRestartRequired { get => JSRef!.Get<ActionEvent>("onRestartRequired"); set { } }
+        public ActionEvent<EnumString<OnRestartRequiredReason>> OnRestartRequired { get => JSRef!.Get<ActionEvent<EnumString<OnRestartRequiredReason>>>("onRestartRequired"); set { } }
         #endregion
     }
 }

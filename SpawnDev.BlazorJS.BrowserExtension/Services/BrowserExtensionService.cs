@@ -15,7 +15,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
             else if (!_JS.IsUndefined("chrome?.runtime")) return _JS.Get<Chrome?>("chrome");
             return null;
         });
-        private static Lazy<ChromeRuntime?> _ChromeRuntime = new Lazy<ChromeRuntime?>(() => _Chrome.Value?.Runtime);
+        private static Lazy<Runtime?> _ChromeRuntime = new Lazy<Runtime?>(() => _Chrome.Value?.Runtime);
         // extension id
         private static Lazy<string> _ExtensionId = new Lazy<string>(() => _ChromeRuntime.Value?.Id ?? "");
         // extension mode
@@ -47,7 +47,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
         /// <summary>
         /// chrome.runtime or null
         /// </summary>
-        public ChromeRuntime? ChromeRuntime => _ChromeRuntime.Value;
+        public Runtime? ChromeRuntime => _ChromeRuntime.Value;
         /// <summary>
         /// The base uri of this Blazor app
         /// </summary>

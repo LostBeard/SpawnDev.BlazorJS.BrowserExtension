@@ -18,11 +18,11 @@ namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
         /// <summary>
         /// This module provides information about your extension and the environment it's running in.
         /// </summary>
-        public ChromeRuntime? Runtime => JSRef!.Get<ChromeRuntime?>("runtime");
+        public Runtime? Runtime => JSRef!.Get<Runtime?>("runtime");
         /// <summary>
         /// Enables extensions to store and retrieve data, and listen for changes to stored items.
         /// </summary>
-        public ChromeStorage? Storage => JSRef!.Get<ChromeStorage?>("storage");
+        public Storage? Storage => JSRef!.Get<Storage?>("storage");
         /// <summary>
         /// Interact with the browser's tab system.
         /// </summary>

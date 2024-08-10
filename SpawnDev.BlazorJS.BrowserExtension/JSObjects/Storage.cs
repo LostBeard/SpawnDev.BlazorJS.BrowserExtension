@@ -7,13 +7,16 @@ namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
     /// Enables extensions to store and retrieve data, and listen for changes to stored items.<br/>
     /// https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage
     /// </summary>
-    public class ChromeStorage : JSObject
+    public class Storage : JSObject
     {
         /// <summary>
         /// Deserialization constructor
         /// </summary>
         /// <param name="_ref"></param>
-        public ChromeStorage(IJSInProcessObjectReference _ref) : base(_ref) { }
+        public Storage(IJSInProcessObjectReference _ref) : base(_ref) { }
+        /// <summary>
+        /// Represents the sync storage area. Items in sync storage are synced by the browser, and are available across all instances of that browser that the user is logged into, across different devices.
+        /// </summary>
         public StorageArea Sync => JSRef!.Get<StorageArea>("sync");
         /// <summary>
         /// Represents the local storage area. Items in local storage are local to the machine the extension was installed on.
@@ -27,8 +30,6 @@ namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
         /// Represents the session storage area. Items in session storage are stored in memory and are not persisted to disk.
         /// </summary>
         public StorageArea Session => JSRef!.Get<StorageArea>("session");
-
-
         #region Events
         /// <summary>
         /// The function called when this event occurs. The function is passed these arguments:<br />
