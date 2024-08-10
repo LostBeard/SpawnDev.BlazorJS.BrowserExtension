@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
+﻿namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
 {
     /// <summary>
     /// Details passed to the event handler for Runtime.OnInstalled<br/>
