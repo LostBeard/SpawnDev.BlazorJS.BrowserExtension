@@ -6,8 +6,10 @@
 	<PropertyGroup>
 		<!-- Browser sxtensions have stricter ContentSecurityPolicy rules so this flag tells SpawnDev.BlazorJS.WebWorkers to patch the Blazor framework at build time instead of doing it at runtime -->
 		<WebWorkerPatchFramework>true</WebWorkerPatchFramework>
-
+		
 		<SpawnDevBrowserExtensionPlatforms Condition="'$(SpawnDevBrowserExtensionPlatforms)' == ''">Chrome;Firefox</SpawnDevBrowserExtensionPlatforms>
+
+		<SpawnDevBrowserExtensionVerbose Condition="'$(SpawnDevBrowserExtensionVerbose)' == ''">false</SpawnDevBrowserExtensionVerbose>
 
 		<SpawnDevBrowserExtensionBuildAssetsPath Condition="'$(SpawnDevBrowserExtensionBuildAssetsPath)' == ''">wwwroot</SpawnDevBrowserExtensionBuildAssetsPath>
 		<SpawnDevBrowserExtensionBuildOutputPath Condition="'$(SpawnDevBrowserExtensionBuildOutputPath)' == ''">$(Configuration)Extension</SpawnDevBrowserExtensionBuildOutputPath>

@@ -44,6 +44,8 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Build.Tasks
 
         public string OutputWwwroot { get; set; }
 
+        public bool Verbose { get; set; }
+
         public override bool Execute()
         {
 #if DEBUG

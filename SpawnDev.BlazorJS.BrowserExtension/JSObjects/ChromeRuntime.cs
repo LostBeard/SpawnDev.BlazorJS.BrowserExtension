@@ -9,7 +9,8 @@ namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
     /// - Communicate between different parts of your extension. For advice on choosing between the messaging options, see Choosing between one-off messages and connection-based messaging.<br/>
     /// - Communicate with other extensions.<br/>
     /// - Communicate with native applications.<br/>
-    /// https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime
+    /// https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime<br/>
+    /// https://developer.chrome.com/docs/extensions/reference/api/runtime
     /// </summary>
     public class ChromeRuntime : JSObject
     {
@@ -22,15 +23,24 @@ namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
         /// </summary>
         public string? Id => JSRef!.Get<string?>("id");
         /// <summary>
+        /// This value is set when an asynchronous function has an error condition that it needs to report to its caller.
+        /// </summary>
+        public Error? LastError => JSRef!.Get<Error?>("lastError");
+        /// <summary>
+        /// Retrieves the Window object for the background page running inside the current extension.
+        /// </summary>
+        /// <returns></returns>
+        public Task<Window?> GetBackgroundPage() => JSRef!.CallAsync<Window?>("getBackgroundPage");
+        /// <summary>
+        /// Opens your extension's options page.
+        /// </summary>
+        public Task OpenOptionsPage() => JSRef!.CallVoidAsync("openOptionsPage");
+        /// <summary>
         /// Given a relative path from the manifest.json to a resource packaged with the extension, returns a fully-qualified URL.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
         public string GetURL(string path) => JSRef!.Call<string>("getURL", path);
-        /// <summary>
-        /// Opens your extension's options page.
-        /// </summary>
-        public Task OpenOptionsPage() => JSRef!.CallVoidAsync("openOptionsPage");
         /// <summary>
         /// Gets the complete manifest.json file, serialized as an object.
         /// </summary>
@@ -94,58 +104,49 @@ namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
         public Task<T> SendMessage<T>(string extensionId, object message) => JSRef!.CallAsync<T>("sendMessage", extensionId, message);
         #region Events
         /// <summary>
-        /// The function called when this event occurs. The function is passed these arguments:<br />
-        /// StorageChanges changes - Object describing the change. This object contains properties for all the keys in the storage area included in the storageArea.set call, even if key values are unchanged. The name of each property is the name of each key. The value of each key is a storage.StorageChange object describing the change to that item.<br />
-        /// </summary>
-        public JSEventCallback<JSObject, MessageSender, Function?> OnMessage { get => new JSEventCallback<JSObject, MessageSender, Function?>(o => JSRef!.CallVoid("onMessage.addListener", o), o => JSRef!.CallVoid("onMessage.removeListener", o)); set { } }
-        /// <summary>
-        /// Fired when a connection is made with either an extension process or a content script.
-        /// </summary>
-        public JSEventCallback<Port> OnConnect { get => new JSEventCallback<Port>(o => JSRef!.CallVoid("onConnect.addListener", o), o => JSRef!.CallVoid("onConnect.removeListener", o)); set { } }
-        /// <summary>
         /// Fired when a profile that has this extension installed first starts up. This event is not fired when an incognito profile is started.
         /// </summary>
-        public ObservableExtensionEvent onStartup { get => JSRef!.Get<ObservableExtensionEvent>("onStartup"); set { } }
+        public ActionEvent OnStartup { get => JSRef!.Get<ActionEvent>("onStartup"); set { } }
         /// <summary>
         /// Fired when the extension is first installed, when the extension is updated to a new version, and when the browser is updated to a new version.
         /// </summary>
-        public ObservableExtensionEvent onInstalled { get => JSRef!.Get<ObservableExtensionEvent>("onInstalled"); set { } }
+        public ActionEvent OnInstalled { get => JSRef!.Get<ActionEvent>("onInstalled"); set { } }
         /// <summary>
         /// Sent to the event page just before the extension is unloaded. This gives the extension an opportunity to do some cleanup.
         /// </summary>
-        public ObservableExtensionEvent onSuspend { get => JSRef!.Get<ObservableExtensionEvent>("onSuspend"); set { } }
+        public ActionEvent OnSuspend { get => JSRef!.Get<ActionEvent>("onSuspend"); set { } }
         /// <summary>
         /// Sent after runtime.onSuspend to indicate that the extension won't be unloaded after all.
         /// </summary>
-        public ObservableExtensionEvent onSuspendCanceled { get => JSRef!.Get<ObservableExtensionEvent>("onSuspendCanceled"); set { } }
+        public ActionEvent OnSuspendCanceled { get => JSRef!.Get<ActionEvent>("onSuspendCanceled"); set { } }
         /// <summary>
         /// Fired when an update is available, but isn't installed immediately because the extension is currently running.
         /// </summary>
-        public ObservableExtensionEvent onUpdateAvailable { get => JSRef!.Get<ObservableExtensionEvent>("onUpdateAvailable"); set { } }
+        public ActionEvent OnUpdateAvailable { get => JSRef!.Get<ActionEvent>("onUpdateAvailable"); set { } }
         /// <summary>
         /// Fired when a connection is made with either an extension process or a content script.
         /// </summary>
-        public ObservableExtensionEvent onConnect { get => JSRef!.Get<ObservableExtensionEvent>("onConnect"); set { } }
+        public ActionEvent<Port> OnConnect { get => JSRef!.Get<ActionEvent<Port>>("onConnect"); set { } }
         /// <summary>
         /// Fired when a connection is made with another extension.
         /// </summary>
-        public ObservableExtensionEvent onConnectExternal { get => JSRef!.Get<ObservableExtensionEvent>("onConnectExternal"); set { } }
+        public ActionEvent OnConnectExternal { get => JSRef!.Get<ActionEvent>("onConnectExternal"); set { } }
         /// <summary>
         /// Fired when a message is sent from either an extension process or a content script.
         /// </summary>
-        public ObservableExtensionEvent onMessage { get => JSRef!.Get<ObservableExtensionEvent>("onMessage"); set { } }
+        public ActionEvent<JSObject, MessageSender, Function?> OnMessage { get => JSRef!.Get<ActionEvent<JSObject, MessageSender, Function?>>("onMessage"); set { } }
         /// <summary>
         /// Fired when a message is sent from another extension. Cannot be used in a content script.
         /// </summary>
-        public ObservableExtensionEvent onMessageExternal { get => JSRef!.Get<ObservableExtensionEvent>("onMessageExternal"); set { } }
+        public ActionEvent OnMessageExternal { get => JSRef!.Get<ActionEvent>("onMessageExternal"); set { } }
         /// <summary>
         /// Fired when a runtime performance issue is detected for the extension.
         /// </summary>
-        public ObservableExtensionEvent onPerformanceWarning { get => JSRef!.Get<ObservableExtensionEvent>("onPerformanceWarning"); set { } }
+        public ActionEvent OnPerformanceWarning { get => JSRef!.Get<ActionEvent>("onPerformanceWarning"); set { } }
         /// <summary>
         /// Fired when the device needs to be restarted.
         /// </summary>
-        public ObservableExtensionEvent onRestartRequired { get => JSRef!.Get<ObservableExtensionEvent>("onRestartRequired"); set { } }
+        public ActionEvent OnRestartRequired { get => JSRef!.Get<ActionEvent>("onRestartRequired"); set { } }
         #endregion
     }
 }

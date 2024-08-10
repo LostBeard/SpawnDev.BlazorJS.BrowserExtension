@@ -61,6 +61,10 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Build.Tasks
 
         [Required]
         public bool PublishMode { get; set; }
+        /// <summary>
+        /// If true, messages are upgraded to warnings
+        /// </summary>
+        public bool Verbose { get; set; }
 
         public string ExtensionPlatforms { get; set; }
 
@@ -70,9 +74,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Build.Tasks
 
         public override bool Execute()
         {
-#if DEBUG && false
-            Log?.LogWarning($"**********************************  PostPublishTask.Execute  **********************************");
-#endif
+            LogMessage($"**********************************  PostPublishTask.Execute  **********************************");
             if (DebugSpawnDevBrowserExtensionBuildTasks)
             {
                 System.Diagnostics.Debugger.Launch();
@@ -88,15 +90,29 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Build.Tasks
             OutputWwwroot = Path.GetFullPath(Path.Combine(OutputPath, "wwwroot"));
             PackageContentDir = string.IsNullOrEmpty(PackageContentDir) ? "" : Path.GetFullPath(PackageContentDir);
             //
-            var extensionPlatforms = ExtensionPlatforms.Split(';').Select(o => o.Trim());
-            foreach(var extensionPlatform in extensionPlatforms)
+            var files = Directory.GetFiles(OutputWwwroot, "manifest.*.json");
+            var manifestPlatforms = files.Select(o => string.Join(".", Path.GetFileNameWithoutExtension(o).Split('.').Skip(1))).ToArray();
+            //
+            var extensionPlatforms = string.IsNullOrEmpty(ExtensionPlatforms) ? manifestPlatforms : ExtensionPlatforms.Split(';').Select(o => o.Trim()).ToArray();
+            LogMessage($"Platforms: {string.Join(", ", extensionPlatforms)}");
+            foreach (var extensionPlatform in extensionPlatforms)
             {
                 PublishPlatform(extensionPlatform);
             }
+            LogMessage($"Publish platforms complete");
             //
             return true;
         }
-        static JsonSerializerOptions DefaultJsonSerializerOptions { get; set; } = new JsonSerializerOptions
+        void LogMessage(string msg)
+        {
+            if (Verbose) LogWarning($"VERBOSE: {msg}");
+            else Log?.LogMessage($"BrowserExtension: {msg}");
+        }
+        void LogWarning(string msg)
+        {
+            Log?.LogWarning($"BrowserExtension: {msg}");
+        }
+        static JsonSerializerOptions DefaultJsonSerializerOptions { get; } = new JsonSerializerOptions
         {
             WriteIndented = true,
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -107,69 +123,59 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Build.Tasks
         };
         void PublishPlatform(string platform)
         {
-            var outputWwwrootPath = Path.GetFullPath(Path.Combine(OutputPath, "wwwroot"));
-            var extensionOutputPath = Path.GetFullPath(Path.Combine(OutputPath, platform));
-            var extensionOutputAppPath = Path.Combine(extensionOutputPath, "app");
+            var publishWwwrootPath = Path.GetFullPath(Path.Combine(OutputPath, "wwwroot"));
+            var platformOutputPath = Path.GetFullPath(Path.Combine(OutputPath, platform));
+            var platformAppOutputPath = Path.Combine(platformOutputPath, "app");
             // copy the wwwroot folder to the platform's app folder
-            CopyDirectory(outputWwwrootPath, extensionOutputAppPath, true);
-            // get the common manifest.json path
-            var manifestOrigPath = Path.Combine(extensionOutputAppPath, "manifest.json");
+            CopyDirectory(publishWwwrootPath, platformAppOutputPath);
+            // get the shared manifest.json path
+            var platformAppSharedManifestPath = Path.Combine(platformAppOutputPath, "manifest.json");
             // read the common manifest
-            var manifestStr = File.ReadAllText(manifestOrigPath, Encoding.UTF8);
+            var manifestJson = File.ReadAllText(platformAppSharedManifestPath, Encoding.UTF8);
             // read platform specific manifest (if it exists) to merge with the main one
-            var manifestPaths = Directory.GetFiles(extensionOutputAppPath, "manifest.*.json").ToList();
-            var manifestPlatformSrcPath = manifestPaths.FirstOrDefault(o => {
-                var filename = Path.GetFileNameWithoutExtension(o);
-                var platformName = filename.Substring(filename.IndexOf(".") + 1);
-                return platform.Equals(platformName, StringComparison.OrdinalIgnoreCase);
-            });
-            if (!string.IsNullOrEmpty(manifestPlatformSrcPath) && File.Exists(manifestPlatformSrcPath))
+            var platformAppManifestPaths = Directory.GetFiles(platformAppOutputPath, "manifest.*.json").ToList();
+            var platformAppManifestPath = platformAppManifestPaths.FirstOrDefault(o => Path.GetFileName(o).Equals($"manifest.{platform}.json", StringComparison.OrdinalIgnoreCase));
+            if (!string.IsNullOrEmpty(platformAppManifestPath) && File.Exists(platformAppManifestPath))
             {
-                var manifestPlatformStr = File.ReadAllText(manifestPlatformSrcPath);
-                var manifestCommon = JsonSerializer.Deserialize<JsonNode>(manifestStr, DefaultJsonSerializerOptions).AsObject();
+                // merge with the shared
+                var manifestPlatformStr = File.ReadAllText(platformAppManifestPath);
+                var manifestCommon = JsonSerializer.Deserialize<JsonNode>(manifestJson, DefaultJsonSerializerOptions).AsObject();
                 var manifestPlatform = JsonSerializer.Deserialize<JsonNode>(manifestPlatformStr, DefaultJsonSerializerOptions).AsObject();
                 var manifestFinal = manifestCommon.Merge(manifestPlatform);
-                manifestStr = manifestFinal.ToJsonString(DefaultJsonSerializerOptions);
+                manifestJson = manifestFinal.ToJsonString(DefaultJsonSerializerOptions);
             }
-            // remove all manifests from app folder
-            manifestPaths.ForEach(o => File.Delete(o));
-            File.Delete(manifestOrigPath);
-            // save the final manifest to the platform folder
-            var manifestDestPath = Path.Combine(extensionOutputPath, "manifest.json");
-            File.WriteAllText(manifestDestPath, manifestStr, Encoding.UTF8);
+            // remove all manifests from platform /app/ folder
+            platformAppManifestPaths.ForEach(o => File.Delete(o));
+            File.Delete(platformAppSharedManifestPath);
+            // save the final manifest to the platform / folder
+            var platformOutputManifestPath = Path.Combine(platformOutputPath, "manifest.json");
+            File.WriteAllText(platformOutputManifestPath, manifestJson, Encoding.UTF8);
         }
-        static void CopyDirectory(string sourceDir, string destinationDir, bool recursive)
+        static void CopyDirectory(string sourceDir, string destinationDir, bool recursive = true)
         {
             // Get information about the source directory
             var dir = new DirectoryInfo(sourceDir);
-
             // Check if the source directory exists
-            if (!dir.Exists)
-                throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
-
+            if (!dir.Exists) throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
             // Cache directories before we start copying
             DirectoryInfo[] dirs = dir.GetDirectories();
-
             // Create the destination directory
             Directory.CreateDirectory(destinationDir);
-
             // Get the files in the source directory and copy to the destination directory
             foreach (FileInfo file in dir.GetFiles())
             {
                 string targetFilePath = Path.Combine(destinationDir, file.Name);
                 file.CopyTo(targetFilePath);
             }
-
             // If recursive and copying subdirectories, recursively call this method
             if (recursive)
             {
                 foreach (DirectoryInfo subDir in dirs)
                 {
                     string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
-                    CopyDirectory(subDir.FullName, newDestinationDir, true);
+                    CopyDirectory(subDir.FullName, newDestinationDir);
                 }
             }
         }
-
     }
 }

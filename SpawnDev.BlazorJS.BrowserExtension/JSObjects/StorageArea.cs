@@ -1,12 +1,16 @@
 ﻿using Microsoft.JSInterop;
-using SpawnDev.BlazorJS;
-using SpawnDev.BlazorJS.JSObjects;
-using static SpawnDev.BlazorJS.JSObjects.Promise;
 
 namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
 {
+    /// <summary>
+    /// StorageArea is an object representing a storage area.<br/>
+    /// https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/StorageArea
+    /// </summary>
     public class StorageArea : JSObject
     {
+        /// <summary>
+        /// Deserialization constructor
+        /// </summary>
         public StorageArea(IJSInProcessObjectReference _ref) : base(_ref) { }
 
         #region Methods
@@ -56,7 +60,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
         /// The function called when this event occurs. The function is passed these arguments:<br />
         /// StorageChanges changes - Object describing the change. This object contains properties for all the keys in the storage area included in the storageArea.set call, even if key values are unchanged. The name of each property is the name of each key. The value of each key is a storage.StorageChange object describing the change to that item.<br />
         /// </summary>
-        public JSEventCallback<StorageChanges> OnChanged { get => new JSEventCallback<StorageChanges>(o => JSRef!.CallVoid("onChanged.addListener", o), o => JSRef!.CallVoid("onChanged.removeListener", o)); set { /** set MUST BE HERE TO ENABLE += -= operands **/ } }
+        public ActionEvent<StorageChanges> OnChanged { get => JSRef!.Get<ActionEvent<StorageChanges>>("onChanged"); set { } }
         #endregion
     }
 }

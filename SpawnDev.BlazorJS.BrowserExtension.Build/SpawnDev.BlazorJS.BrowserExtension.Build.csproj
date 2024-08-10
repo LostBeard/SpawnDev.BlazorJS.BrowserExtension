@@ -5,7 +5,7 @@
 		<LangVersion>10.0</LangVersion>
 		<OutDir>..\SpawnDev.BlazorJS.BrowserExtension\tasks\netstandard2.0</OutDir>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-		<Version>2.5.5-alpha.1</Version>
+		<Version>2.5.6-alpha.3</Version>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

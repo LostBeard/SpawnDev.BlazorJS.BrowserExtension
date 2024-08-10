@@ -12,6 +12,10 @@ namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
         /// </summary>
         public Chrome(IJSInProcessObjectReference _ref) : base(_ref) { }
         /// <summary>
+        /// Read and modify attributes of and listen to clicks on the browser toolbar button defined with the action manifest key.
+        /// </summary>
+        public Action? Action => JSRef!.Get<Action?>("action");
+        /// <summary>
         /// This module provides information about your extension and the environment it's running in.
         /// </summary>
         public ChromeRuntime? Runtime => JSRef!.Get<ChromeRuntime?>("runtime");

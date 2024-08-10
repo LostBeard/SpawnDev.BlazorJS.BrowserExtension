@@ -1,4 +1,5 @@
 ﻿using Microsoft.JSInterop;
+using SpawnDev.BlazorJS.IJSInProcessObjectReferenceAnyKey;
 using SpawnDev.BlazorJS.JSObjects;
 
 namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
@@ -39,10 +40,10 @@ namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
         /// <summary>
         /// object. This contains the addListener() and removeListener() functions common to all events for extensions built using WebExtension APIs. Listener functions will be called when the other end has called Port.disconnect(). This event will only be fired once for each port. The listener function will be passed the Port object. If the port was disconnected due to an error, then the Port argument will contain an error property giving more information about the error:
         /// </summary>
-        public JSEventCallback<Port> OnDisconnect { get => new JSEventCallback<Port>(o => JSRef!.CallVoid("onDisconnect.addListener", o), o => JSRef!.CallVoid("onDisconnect.removeListener", o)); set { } }
+        public ActionEvent<Port> OnDisconnect { get => JSRef!.Get<ActionEvent<Port>>("onDisconnect"); set { } }
         /// <summary>
         /// object. This contains the addListener() and removeListener() functions common to all events for extensions built using WebExtension APIs. Listener functions will be called when the other end has sent this port a message. The listener will be passed the value that the other end sent.
         /// </summary>
-        public JSEventCallback<JSObject> OnMessage { get => new JSEventCallback<JSObject>(o => JSRef!.CallVoid("onMessage.addListener", o), o => JSRef!.CallVoid("onMessage.removeListener", o)); set { } }
+        public ActionEvent<JSObject> OnMessage { get => JSRef!.Get<ActionEvent<JSObject>>("onMessage"); set { } }
     }
 }

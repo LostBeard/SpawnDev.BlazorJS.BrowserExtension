@@ -48,6 +48,7 @@
 			PackageContentDir="$(_SpawnDevBrowserExtensionBuildContentDirectory)"
 			DebugSpawnDevBrowserExtensionBuildTasks="$(_DebugSpawnDevBrowserExtensionBuildTasks)"
 			ExtensionPlatforms="$(SpawnDevBrowserExtensionPlatforms)"
+			Verbose="$(SpawnDevBrowserExtensionVerbose)"
 			>
 		</PostBuildTask>
 	</Target>
@@ -71,6 +72,7 @@
 			PackageContentDir="$(_SpawnDevBrowserExtensionBuildContentDirectory)"
 			DebugSpawnDevBrowserExtensionBuildTasks="$(_DebugSpawnDevBrowserExtensionBuildTasks)"
 			ExtensionPlatforms="$(SpawnDevBrowserExtensionPlatforms)"
+			Verbose="$(SpawnDevBrowserExtensionVerbose)"
 			>
 		</PostPublishTask>
 	</Target>
