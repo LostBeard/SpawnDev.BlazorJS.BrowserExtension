@@ -5,7 +5,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
     /// <summary>
     /// Extension event
     /// </summary>
-    public class FuncEvent<TResult> : Event
+    public class FuncEvent<TResult> : ExtensionEvent
     {
         /// <summary>
         /// Adds an event handler
@@ -363,7 +363,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
     /// <summary>
     /// Extension event
     /// </summary>
-    public class FuncEvent<T1, T2, T3, T4, TResult> : FuncEvent<T1, T2, TResult>
+    public class FuncEvent<T1, T2, T3, T4, TResult> : FuncEvent<T1, T2, T3, TResult>
     {
         /// <summary>
         /// Adds an event handler

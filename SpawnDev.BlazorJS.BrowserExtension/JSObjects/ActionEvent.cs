@@ -1,12 +1,11 @@
 ﻿using Microsoft.JSInterop;
-using Action = System.Action;
 
 namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
 {
     /// <summary>
     /// Extension event
     /// </summary>
-    public class ActionEvent : Event
+    public class ActionEvent : ExtensionEvent
     {
         /// <summary>
         /// Adds an event handler
@@ -502,7 +501,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.JSObjects
     /// <summary>
     /// Extension event
     /// </summary>
-    public class ActionEvent<T1, T2, T3, T4, T5> : ActionEvent<T1, T2, T3>
+    public class ActionEvent<T1, T2, T3, T4, T5> : ActionEvent<T1, T2, T3, T4>
     {
         /// <summary>
         /// Adds an event handler
