@@ -1,11 +1,5 @@
 ﻿using Microsoft.JSInterop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SpawnDev.BlazorJS.JSObjects;
-using System.Text.Json.Serialization;
 namespace SpawnDev.BlazorJS.BrowserExtension
 {
     /// <summary>
@@ -20,18 +14,13 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// </summary>
         public DeclarativeNetRequest(IJSInProcessObjectReference _ref) : base(_ref) { }
 
+        /// <summary>
+        /// Returns the set of dynamic rules for the extension.
+        /// </summary>
         public Task<Array<Rule>> GetDynamicRules() => JSRef!.CallAsync<Array<Rule>>("getDynamicRules");
-    }
-    public class QueryTransform
-    {
-
-    }
-    /// <summary>
-    /// 
-    /// https://developer.chrome.com/docs/extensions/reference/api/declarativeNetRequest#type-GetRulesFilter
-    /// </summary>
-    public class GetRulesFilter
-    {
-
+        /// <summary>
+        /// Returns the set of dynamic rules for the extension.
+        /// </summary>
+        public Task<Array<Rule>> GetDynamicRules(GetRulesFilter filter) => JSRef!.CallAsync<Array<Rule>>("getDynamicRules", filter);
     }
 }
