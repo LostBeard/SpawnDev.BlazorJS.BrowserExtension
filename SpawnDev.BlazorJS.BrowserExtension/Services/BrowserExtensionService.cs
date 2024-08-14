@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using SpawnDev.BlazorJS.BrowserExtension.JSObjects;
-using SpawnDev.BlazorJS.JSObjects;
 using System.Web;
 
 namespace SpawnDev.BlazorJS.BrowserExtension.Services
@@ -47,7 +45,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
         /// <summary>
         /// chrome.runtime or null
         /// </summary>
-        public Runtime? ChromeRuntime => _ChromeRuntime.Value;
+        public Runtime? Runtime => _ChromeRuntime.Value;
         /// <summary>
         /// The base uri of this Blazor app
         /// </summary>
@@ -84,13 +82,13 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
             if (ExtensionMode == ExtensionMode.Content)
             {
                 // Window
-                using var window = JS.Get<Window>("window");
+                using var window = JS.Get<BlazorJS.JSObjects.Window>("window");
                 //Document = JS.Get<Document>("document");
                 // listen to the custom event dispatched by the content-loader when the page location changes
                 window.AddEventListener<LocationChangeEvent>("locationChange", Window_LocationChange);
             }
         }
-        string? _GetURL(string path) => ChromeRuntime?.GetURL(path);
+        string? _GetURL(string path) => Runtime?.GetURL(path);
         void Window_LocationChange(LocationChangeEvent locationChangeEvent)
         {
             Location = locationChangeEvent.Detail;
@@ -109,7 +107,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
         /// <returns></returns>
         public bool CheckContextValid()
         {
-            return ChromeRuntime?.Id != null;
+            return Runtime?.Id != null;
         }
         /// <summary>
         /// Returns true if the context was valid and has been invalidated
@@ -117,7 +115,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
         /// <returns></returns>
         public bool CheckContextInvalided()
         {
-            return !string.IsNullOrEmpty(ExtensionId) && ChromeRuntime?.Id == null;
+            return !string.IsNullOrEmpty(ExtensionId) && Runtime?.Id == null;
         }
         /// <summary>
         /// Returns the extension mode.
@@ -185,7 +183,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
             if (ExtensionMode == ExtensionMode.Content)
             {
                 // Window
-                using var window = JS.Get<Window>("window");
+                using var window = JS.Get<BlazorJS.JSObjects.Window>("window");
                 //Document = JS.Get<Document>("document");
                 // listen to the custom event dispatched by the content-loader when the page location changes
                 window.RemoveEventListener<LocationChangeEvent>("locationChange", Window_LocationChange);
