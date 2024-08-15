@@ -4,13 +4,39 @@
 // Loads Blazor WASM app content.html into the extension "content" context of an existing webpage
 // uses browser-polyfill - https://github.com/mozilla/webextension-polyfill
 // tested in Chrome and Firefox on Windows
-// not tested in other browsers yet
+// not tested in other browsers
 var initBlazorContent = async function () {
     var verboseMode = false;
     var consoleLog = function () {
         if (!verboseMode) return;
         console.log(...arguments);
     };
+    // Blazor will fail to load due to ContentSecurityPolicy (CSP) restrictions on some websites
+    // The error happens on the call to `WebAssembly.compileStreaming`
+    // this will catch a CSP error so that it does not become an uncaught Promise exception
+    // the onSecurityPolicyViolation event will notify the background worker
+    // the background worker can optionally patch the websites CSP rules to allow Blazor to run or do nothing
+    var patchWebAssemblyCompileStreaming = true;
+    var webAssemblyCompileStreamingOrig = null;
+    async function WebAssemblyCompileStreaming() {
+        var ret = null;
+        var args = [...arguments];
+        try {
+            ret = await webAssemblyCompileStreamingOrig.apply(null, args);
+            return ret;
+        } catch (ex) {
+            
+            console.log('WebAssemblyCompileStreaming failed:', args, ex);
+            // the onSecurityPolicyViolation event handler
+            console.log('Notifying background worker');
+            // then just async hang here to prevent Blazor from throwing an error as it is up to the background worker now
+            await new Promise(() => { });
+        }
+    }
+    if (patchWebAssemblyCompileStreaming && typeof WebAssembly.compileStreaming == "function") {
+        webAssemblyCompileStreamingOrig = WebAssembly.compileStreaming.bind(WebAssembly);
+        WebAssembly.compileStreaming = WebAssemblyCompileStreaming;
+    }
     // Some websites have ContentSecurityPolicies that prevent webassembly
     // This will cause Blazor loading to fail
     // The `securitypolicyviolation` event will fire when this error occurs
@@ -52,7 +78,6 @@ var initBlazorContent = async function () {
         var response = await fetch(href);
         return await response.text();
     }
-
     var undefinedGets = {};
     function createProxiedObject(obj, useIfDefined) {
         var ret = new Proxy(obj, {
@@ -123,7 +148,7 @@ var initBlazorContent = async function () {
                 try {
                     target[key] = value;
                 } catch (ex) {
-                    console.log('Set failed!!!!!!!!', target, key);
+                    console.log('Set failed', target, key);
                     useIfDefined = {};
                     useIfDefined[key] = value;
                 }
