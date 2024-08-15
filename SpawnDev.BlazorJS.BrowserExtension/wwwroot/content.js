@@ -13,9 +13,9 @@ var initBlazorContent = async function () {
     };
     // Blazor will fail to load due to ContentSecurityPolicy (CSP) restrictions on some websites
     // The error happens on the call to `WebAssembly.compileStreaming`
-    // this will catch a CSP error so that it does not become an uncaught Promise exception
+    // this will catch the error so that it does not become an uncaught Promise exception
     // the onSecurityPolicyViolation event will notify the background worker
-    // the background worker can optionally patch the websites CSP rules to allow Blazor to run or do nothing
+    // the background worker can optionally patch the website's CSP rules to allow Blazor to run or do nothing
     var patchWebAssemblyCompileStreaming = true;
     var webAssemblyCompileStreamingOrig = null;
     async function WebAssemblyCompileStreaming() {
@@ -25,10 +25,8 @@ var initBlazorContent = async function () {
             ret = await webAssemblyCompileStreamingOrig.apply(null, args);
             return ret;
         } catch (ex) {
-            
-            console.log('WebAssemblyCompileStreaming failed:', args, ex);
-            // the onSecurityPolicyViolation event handler
-            console.log('Notifying background worker');
+            consoleLog('WebAssemblyCompileStreaming failed:', args, ex);
+            // the onSecurityPolicyViolation event handler will notify the background worker
             // then just async hang here to prevent Blazor from throwing an error as it is up to the background worker now
             await new Promise(() => { });
         }

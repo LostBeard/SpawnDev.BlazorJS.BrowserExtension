@@ -11,7 +11,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// A string. Specifies whether the network request is first-party or third-party. The request is considered first-party if it's for the same domain as the document or subdocument that initiates the request. Otherwise, it's considered third-party. If omitted, all requests are accepted. Possible values are "firstParty" and "thirdParty".
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? DomainType { get; set; }
+        public EnumString<DomainType>? DomainType { get; set; }
         /// <summary>
         /// An array of string. The rule only matches network requests originating from this list of domains. If the list is omitted, the rule is applied to requests from all domains. An empty list is not allowed. A canonical domain should be used. This matches against the request initiator and not the request URL.
         /// </summary>
@@ -49,22 +49,22 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// An array of string. List of HTTP request methods that the rule matches. An empty list is not allowed. Specifying a requestMethods rule condition also excludes non-HTTP(s) requests, whereas specifying excludedRequestMethods does not.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string[]? RequestMethods { get; set; }
+        public EnumString<RequestMethod>[]? RequestMethods { get; set; }
         /// <summary>
         /// An array of string. List of request methods that the rule does not match on. Only one of requestMethods and excludedRequestMethods should be specified. If neither of them is specified, all request methods are matched.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string[]? ExcludedRequestMethods { get; set; }
+        public EnumString<RequestMethod>[]? ExcludedRequestMethods { get; set; }
         /// <summary>
         /// An array of declarativeNetRequest.ResourceType. List of resource types that the rule matches with. An empty list is not allowed. This must be specified for "allowAllRequests" rules and may only include the "sub_frame" and "main_frame" resource types.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string[]? ResourceTypes { get; set; }
+        public EnumString<ResourceType>[]? ResourceTypes { get; set; }
         /// <summary>
         /// An array of declarativeNetRequest.ResourceType. List of resource types that the rule does not match on. Only one of resourceTypes and excludedResourceTypes should be specified. If neither of them is specified, all resource types except "main_frame" are blocked.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string[]? ExcludedResourceTypes { get; set; }
+        public EnumString<ResourceType>[]? ExcludedResourceTypes { get; set; }
         /// <summary>
         /// An array of number. List of tabs.Tab.id that the rule should match. An ID of tabs.TAB_ID_NONE matches requests that don't originate from a tab. An empty list is not allowed. Only supported for session-scoped rules.
         /// </summary>

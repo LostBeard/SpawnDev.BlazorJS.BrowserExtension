@@ -21,11 +21,11 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// number. An ID that uniquely identifies a rule within a ruleset. Mandatory and should be >= 1.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public long? Id { get; set; }
+        public int? Id { get; set; }
         /// <summary>
         /// number. Rule priority. Defaults to 1. When specified, should be >= 1. See Matching precedents for details on how priority affects which rules are applied.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public long? Priority { get; set; }
+        public int? Priority { get; set; }
     }
 }
