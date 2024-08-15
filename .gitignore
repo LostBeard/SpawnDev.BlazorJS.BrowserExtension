@@ -4,7 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # ignore built dlls from SpawnDev.BlazorJS.BrowserExtension.Build
-# SpawnDev.BlazorJS.BrowserExtension/tasks/netstandard2.0/*
+SpawnDev.BlazorJS.BrowserExtension/tasks/netstandard2.0/*
 
 # User-specific files
 *.rsuser
