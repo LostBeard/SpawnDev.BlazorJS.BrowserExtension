@@ -6,34 +6,6 @@ using System.Text.Json.Serialization;
 
 namespace SpawnDev.BlazorJS.BrowserExtension
 {
-    public class EnumStringConverter<T> : JsonConverter<T> where T : struct, Enum
-    {
-        /// <summary>
-        /// Returns true if the type can be converted
-        /// </summary>
-        public override bool CanConvert(Type typeToConvert)
-        {
-            return typeToConvert.IsEnum;
-        }
-        /// <summary>
-        /// Reads the type value from the Json reader
-        /// </summary>
-        public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        {
-            var valueString = JsonSerializer.Deserialize<string?>(ref reader);
-            if (string.IsNullOrEmpty(valueString)) return default;
-            var enumString = new EnumString<T>(valueString);
-            return enumString.Enum ?? default;
-        }
-        /// <summary>
-        /// Writes the type value to the Json reader
-        /// </summary>
-        public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
-        {
-            var enumString = new EnumString<T>(value);
-            JsonSerializer.Serialize(writer, enumString == null ? null : enumString.String);
-        }
-    }
     /// <summary>
     /// This module provides information about your extension and the environment it's running in.<br/>
     /// It also provides messaging APIs enabling you to:<br/>
