@@ -104,29 +104,4 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// <returns></returns>
         public Task UpdateStaticRules(UpdateStaticRulesOptions options) => JSRef!.CallAsync("updateStaticRules", options);
     }
-    /// <summary>
-    /// https://developer.chrome.com/docs/extensions/reference/api/declarativeNetRequest#type-TestMatchRequestDetails
-    /// TODO - finish class
-    /// </summary>
-    public class TestMatchRequestDetails
-    {
-        /// <summary>
-        /// A string. The initiator URL (if any) for the hypothetical request.
-        /// </summary>
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? Initiator { get; set; }
-        /// <summary>
-        /// Standard HTTP method of the hypothetical request. Defaults to "get" for HTTP requests and is ignored for non-HTTP requests.
-        /// </summary>
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public EnumString<RequestMethod>? Method { get; set; }
-    }
-    /// <summary>
-    /// https://developer.chrome.com/docs/extensions/reference/api/declarativeNetRequest#type-UpdateRulesetOptions
-    /// TODO - finish class
-    /// </summary>
-    public class UpdateRulesetOptions
-    {
-
-    }
 }

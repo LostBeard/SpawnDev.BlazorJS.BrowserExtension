@@ -87,6 +87,5 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? UrlFilter { get; set; }
-
     }
 }
