@@ -22,3 +22,4 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// </summary>
         public string Value { get; set; }
     }
+}
