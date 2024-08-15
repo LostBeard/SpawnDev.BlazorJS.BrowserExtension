@@ -1,9 +1,11 @@
 ﻿using Microsoft.JSInterop;
+using System.Text.Json.Serialization;
 
 namespace SpawnDev.BlazorJS.BrowserExtension
 {
     /// <summary>
     /// Interact with the browser's tab system.<br/>
+    /// Note: The Tabs API can be used by the service worker and extension pages, but not content scripts.<br/>
     /// https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs
     /// </summary>
     public class Tabs : JSObject
@@ -16,6 +18,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// Deserialization constructor
         /// </summary>
         public Tabs(IJSInProcessObjectReference _ref) : base(_ref) { }
+        #region Methods
         /// <summary>
         /// Retrieves details about the specified tab.
         /// </summary>
@@ -60,7 +63,25 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// <param name="options"></param>
         /// <returns></returns>
         public Task<T> SendMessage<T>(int tabId, object message, TabMessageOptions options) => JSRef!.CallAsync<T>("sendMessage", tabId, message, options);
-
+        /// <summary>
+        /// Reload a tab.
+        /// </summary>
+        /// <returns></returns>
+        public Task Reload() => JSRef!.CallVoidAsync("reload");
+        /// <summary>
+        /// Reload a tab.
+        /// </summary>
+        /// <param name="tabId"></param>
+        /// <returns></returns>
+        public Task Reload(int tabId) => JSRef!.CallVoidAsync("reload", tabId);
+        /// <summary>
+        /// Reload a tab.
+        /// </summary>
+        /// <param name="tabId"></param>
+        /// <param name="reloadProperties"></param>
+        /// <returns></returns>
+        public Task Reload(int tabId, ReloadProperties reloadProperties) => JSRef!.CallVoidAsync("reload", tabId, reloadProperties);
+        #endregion
         #region Events
         // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs#events
         /// <summary>
