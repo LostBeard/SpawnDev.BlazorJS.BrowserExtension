@@ -103,5 +103,9 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// <param name="options"></param>
         /// <returns></returns>
         public Task UpdateStaticRules(UpdateStaticRulesOptions options) => JSRef!.CallAsync("updateStaticRules", options);
+        /// <summary>
+        /// Fired when a rule is matched with a request. Only available for unpacked extensions with the "declarativeNetRequestFeedback" permission as this is intended to be used for debugging purposes only.
+        /// </summary>
+        public ActionEvent<MatchedRuleInfo> OnRuleMatchedDebug { get => JSRef!.Get<ActionEvent<MatchedRuleInfo>>("onRuleMatchedDebug"); set { } }
     }
 }

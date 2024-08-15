@@ -113,6 +113,6 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// <summary>
         /// Fired when a browser action icon is clicked. This event will not fire if the browser action has a popup.
         /// </summary>
-        public ActionEvent<StorageChanges> OnClicked { get => JSRef!.Get<ActionEvent<StorageChanges>>("onClicked"); set { } }
+        public ActionEvent<Tab> OnClicked { get => JSRef!.Get<ActionEvent<Tab>>("onClicked"); set { } }
     }
 }

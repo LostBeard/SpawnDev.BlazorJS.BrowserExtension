@@ -59,8 +59,10 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// <summary>
         /// The function called when this event occurs. The function is passed these arguments:<br />
         /// StorageChanges changes - Object describing the change. This object contains properties for all the keys in the storage area included in the storageArea.set call, even if key values are unchanged. The name of each property is the name of each key. The value of each key is a storage.StorageChange object describing the change to that item.<br />
+        /// Changes - StorageChanges<br/>
+        /// AreaName - string
         /// </summary>
-        public ActionEvent<StorageChanges> OnChanged { get => JSRef!.Get<ActionEvent<StorageChanges>>("onChanged"); set { } }
+        public ActionEvent<StorageChanges, string> OnChanged { get => JSRef!.Get<ActionEvent<StorageChanges, string>>("onChanged"); set { } }
         #endregion
     }
 }
