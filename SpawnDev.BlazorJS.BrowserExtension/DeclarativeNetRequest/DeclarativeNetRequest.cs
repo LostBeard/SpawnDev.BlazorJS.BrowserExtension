@@ -73,20 +73,23 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// <param name="options"></param>
         /// <returns></returns>
         public Task SetExtensionActionOptions(ExtensionActionOptions options) => JSRef!.CallAsync("setExtensionActionOptions", options);
-
-        // TODO - finish
-        public Task TestMatchOutcome() => JSRef!.CallAsync("testMatchOutcome");
-
+        /// <summary>
+        /// Checks if any of the extension's declarativeNetRequest rules would match a hypothetical request.
+        /// </summary>
+        /// <returns></returns>
+        public Task TestMatchOutcome(TestMatchRequestDetails options) => JSRef!.CallAsync("testMatchOutcome", options);
         /// <summary>
         /// Modifies the active set of dynamic rules for the extension.
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
         public Task UpdateDynamicRules(UpdateRuleOptions options) => JSRef!.CallAsync("updateDynamicRules", options);
-
-        // TODO - finish
-        public Task UpdateEnabledRulesets() => JSRef!.CallAsync("updateEnabledRulesets");
-
+        /// <summary>
+        /// Updates the set of active static rulesets for the extension.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public Task UpdateEnabledRulesets(UpdateRulesetOptions options) => JSRef!.CallAsync("updateEnabledRulesets", options);
         /// <summary>
         /// Modifies the set of session-scoped rules for the extension.
         /// </summary>
@@ -100,5 +103,30 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// <param name="options"></param>
         /// <returns></returns>
         public Task UpdateStaticRules(UpdateStaticRulesOptions options) => JSRef!.CallAsync("updateStaticRules", options);
+    }
+    /// <summary>
+    /// https://developer.chrome.com/docs/extensions/reference/api/declarativeNetRequest#type-TestMatchRequestDetails
+    /// TODO - finish class
+    /// </summary>
+    public class TestMatchRequestDetails
+    {
+        /// <summary>
+        /// A string. The initiator URL (if any) for the hypothetical request.
+        /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string? Initiator { get; set; }
+        /// <summary>
+        /// Standard HTTP method of the hypothetical request. Defaults to "get" for HTTP requests and is ignored for non-HTTP requests.
+        /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public EnumString<RequestMethod>? Method { get; set; }
+    }
+    /// <summary>
+    /// https://developer.chrome.com/docs/extensions/reference/api/declarativeNetRequest#type-UpdateRulesetOptions
+    /// TODO - finish class
+    /// </summary>
+    public class UpdateRulesetOptions
+    {
+
     }
 }
