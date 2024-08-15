@@ -7,15 +7,15 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
     {
         private static BlazorJSRuntime _JS => BlazorJSRuntime.JS;
         // chrome
-        private static Lazy<Chrome?> _Chrome = new Lazy<Chrome?>(() =>
+        private static Lazy<Browser?> _Browser = new Lazy<Browser?>(() =>
         {
-            if (!_JS.IsUndefined("browser?.runtime")) return _JS.Get<Chrome?>("browser");
-            else if (!_JS.IsUndefined("chrome?.runtime")) return _JS.Get<Chrome?>("chrome");
+            if (!_JS.IsUndefined("browser?.runtime")) return _JS.Get<Browser?>("browser");
+            else if (!_JS.IsUndefined("chrome?.runtime")) return _JS.Get<Browser?>("chrome");
             return null;
         });
-        private static Lazy<Runtime?> _ChromeRuntime = new Lazy<Runtime?>(() => _Chrome.Value?.Runtime);
+        private static Lazy<Runtime?> _Runtime = new Lazy<Runtime?>(() => _Browser.Value?.Runtime);
         // extension id
-        private static Lazy<string> _ExtensionId = new Lazy<string>(() => _ChromeRuntime.Value?.Id ?? "");
+        private static Lazy<string> _ExtensionId = new Lazy<string>(() => _Runtime.Value?.Id ?? "");
         // extension mode
         private static Lazy<ExtensionMode> _ExtensionMode = new Lazy<ExtensionMode>(() => GetExtensionMode(_JS.Get<string>("location.href"), _ExtensionId.Value, _JS.GlobalScope));
         private BlazorJSRuntime JS;
@@ -41,11 +41,11 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
         /// <summary>
         /// The global instance of chrome or null
         /// </summary>
-        public Chrome? Chrome => _Chrome.Value;
+        public Browser? Browser => _Browser.Value;
         /// <summary>
         /// chrome.runtime or null
         /// </summary>
-        public Runtime? Runtime => _ChromeRuntime.Value;
+        public Runtime? Runtime => _Runtime.Value;
         /// <summary>
         /// The base uri of this Blazor app
         /// </summary>

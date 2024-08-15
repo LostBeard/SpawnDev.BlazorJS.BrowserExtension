@@ -5,12 +5,12 @@ namespace SpawnDev.BlazorJS.BrowserExtension
     /// <summary>
     /// Extension APIs
     /// </summary>
-    public class Chrome : JSObject
+    public class Browser : JSObject
     {
         /// <summary>
         /// Deserialization constructor
         /// </summary>
-        public Chrome(IJSInProcessObjectReference _ref) : base(_ref) { }
+        public Browser(IJSInProcessObjectReference _ref) : base(_ref) { }
         /// <summary>
         /// Read and modify attributes of and listen to clicks on the browser toolbar button defined with the action manifest key.
         /// </summary>
