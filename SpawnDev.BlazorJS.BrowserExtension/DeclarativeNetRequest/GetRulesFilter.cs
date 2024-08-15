@@ -2,7 +2,6 @@
 namespace SpawnDev.BlazorJS.BrowserExtension
 {
     /// <summary>
-    /// 
     /// https://developer.chrome.com/docs/extensions/reference/api/declarativeNetRequest#type-GetRulesFilter
     /// </summary>
     public class GetRulesFilter

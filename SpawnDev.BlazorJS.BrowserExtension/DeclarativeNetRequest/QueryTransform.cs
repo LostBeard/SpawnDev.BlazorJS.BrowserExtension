@@ -11,7 +11,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// An array of objects describing the list of query key-value pairs to be added or replaced.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public AddOrReplaceParam[]? AddOrReplaceParams { get; set; }
+        public QueryKeyValue[]? AddOrReplaceParams { get; set; }
         /// <summary>
         /// An array of string. The list of query keys to be removed.
         /// </summary>

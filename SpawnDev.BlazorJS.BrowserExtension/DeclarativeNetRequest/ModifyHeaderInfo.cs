@@ -10,13 +10,11 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// <summary>
         /// A string. The name of the header to be modified.
         /// </summary>
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? Header { get; set; }
+        public string Header { get; set; }
         /// <summary>
         /// A string. The operation to be performed on a header. Possible values are "append", "set", and "remove".
         /// </summary>
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? Operation { get; set; }
+        public EnumString<HeaderOperation> Operation { get; set; }
         /// <summary>
         /// A string. The new value for the header. Must be specified for append and set operations. Not allowed for the "remove" operation.
         /// </summary>
