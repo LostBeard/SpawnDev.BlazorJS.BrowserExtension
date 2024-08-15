@@ -12,6 +12,6 @@
         /// <summary>
         /// string Specifies the reason why the regular expression is not supported. Possible values are "syntaxError" and "memoryLimitExceeded". Only provided if isSupported is false.
         /// </summary>
-        public string? Reason { get; set; }
+        public EnumString<UnsupportedRegexReason>? Reason { get; set; }
     }
 }

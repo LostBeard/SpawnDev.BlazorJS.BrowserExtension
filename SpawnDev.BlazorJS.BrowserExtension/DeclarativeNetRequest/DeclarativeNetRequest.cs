@@ -77,7 +77,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// Checks if any of the extension's declarativeNetRequest rules would match a hypothetical request.
         /// </summary>
         /// <returns></returns>
-        public Task TestMatchOutcome(TestMatchRequestDetails options) => JSRef!.CallAsync("testMatchOutcome", options);
+        public Task<TestMatchOutcomeResult> TestMatchOutcome(TestMatchRequestDetails options) => JSRef!.CallAsync<TestMatchOutcomeResult>("testMatchOutcome", options);
         /// <summary>
         /// Modifies the active set of dynamic rules for the extension.
         /// </summary>

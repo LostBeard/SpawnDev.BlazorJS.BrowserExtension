@@ -20,8 +20,5 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// <summary>
         /// An array of integer. The IDs of the rules to return.
         /// </summary>
-        public string Value
-        {
-            get; set;
-        }
+        public string Value { get; set; }
     }
