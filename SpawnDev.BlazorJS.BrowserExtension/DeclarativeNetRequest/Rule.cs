@@ -10,18 +10,15 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// <summary>
         /// declarativeNetRequest.RuleAction. The action to take if this rule is matched.
         /// </summary>
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public RuleAction? Action { get; set; }
+        public RuleAction Action { get; set; } = default!;
         /// <summary>
         /// declarativeNetRequest.RuleCondition. The condition under which this rule is triggered.
         /// </summary>
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public RuleCondition? Condition { get; set; }
+        public RuleCondition Condition { get; set; } = default!;
         /// <summary>
         /// number. An ID that uniquely identifies a rule within a ruleset. Mandatory and should be >= 1.
         /// </summary>
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public int? Id { get; set; }
+        public int Id { get; set; }
         /// <summary>
         /// number. Rule priority. Defaults to 1. When specified, should be >= 1. See Matching precedents for details on how priority affects which rules are applied.
         /// </summary>
