@@ -61,13 +61,31 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// Returns the set of session rules for the extension.
         /// </summary>
         public Task<Array<Rule>> GetSessionRules(GetRulesFilter filter) => JSRef!.CallAsync<Array<Rule>>("getSessionRules", filter);
-
         /// <summary>
         /// Checks if a regular expression is supported as a declarativeNetRequest.RuleCondition.regexFilter rule condition.
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
         public Task<IsRegexSupportedResult> IsRegexSupported(RegexOptions options) => JSRef!.CallAsync<IsRegexSupportedResult>("isRegexSupported", options);
+        /// <summary>
+        /// Configures how the action count for tabs are handled.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public Task SetExtensionActionOptions(ExtensionActionOptions options) => JSRef!.CallAsync("setExtensionActionOptions", options);
+
+        // TODO - finish
+        public Task TestMatchOutcome() => JSRef!.CallAsync("testMatchOutcome");
+
+        /// <summary>
+        /// Modifies the active set of dynamic rules for the extension.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public Task UpdateDynamicRules(UpdateRuleOptions options) => JSRef!.CallAsync("updateDynamicRules", options);
+
+        // TODO - finish
+        public Task UpdateEnabledRulesets() => JSRef!.CallAsync("updateEnabledRulesets");
 
         /// <summary>
         /// Modifies the set of session-scoped rules for the extension.
@@ -76,20 +94,11 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// <returns></returns>
         public Task UpdateSessionRules(UpdateRuleOptions options) => JSRef!.CallAsync("updateSessionRules", options);
         /// <summary>
-        /// Modifies the active set of dynamic rules for the extension.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public Task UpdateDynamicRules(UpdateRuleOptions options) => JSRef!.CallAsync("updateDynamicRules", options);
-        /// <summary>
         /// Modifies the enabled state of rules in a static ruleset. The number of rules that can be disabled in a ruleset is limited to the value of MAX_NUMBER_OF_DISABLED_STATIC_RULES.<br/>
         /// Rules can be enabled and disabled while the ruleset containing them is disabled. Any changes become effective when the ruleset is enabled.
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
         public Task UpdateStaticRules(UpdateStaticRulesOptions options) => JSRef!.CallAsync("updateStaticRules", options);
-
-
-
     }
 }
