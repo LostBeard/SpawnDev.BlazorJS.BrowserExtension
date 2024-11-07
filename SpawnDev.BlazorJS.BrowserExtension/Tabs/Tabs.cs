@@ -88,6 +88,10 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// Fires when the active tab in a window changes. Note that the tab's URL may not be set at the time this event fired.
         /// </summary>
         public ActionEvent<ActiveInfo> OnActivated { get => JSRef!.Get<ActionEvent<ActiveInfo>>("onActivated"); set { } }
+        /// <summary>
+        /// Fired when a tab is updated.
+        /// </summary>
+        public ActionEvent<ChangeInfo> OnUpdated { get => JSRef!.Get<ActionEvent<ChangeInfo>>("onUpdated"); set { } }
 
         #endregion
     }
