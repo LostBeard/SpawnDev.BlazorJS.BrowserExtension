@@ -20,18 +20,32 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// <param name="keys"></param>
         /// <returns></returns>
         public Task<long> GetBytesInUse(params string[] keys) => JSRef!.CallAsync<long>("getBytesInUse", keys);
-
-        public Task<long> Remove(params string[] keys) => JSRef!.CallAsync<long>("remove", keys);
-
+        /// <summary>
+        /// Removes one or more items from the storage area.
+        /// </summary>
+        /// <param name="keys">A string, or array of strings, representing the key(s) of the item(s) to be removed.</param>
+        /// <returns>A Promise that will be fulfilled with no arguments if the operation succeeded. If the operation failed, the promise will be rejected with an error message.</returns>
+        public Task Remove(params string[] keys) => JSRef!.CallVoidAsync("remove", keys);
+        /// <summary>
+        /// Removes all items from the storage area.
+        /// </summary>
+        /// <returns></returns>
         public Task Clear() => JSRef!.CallVoidAsync("clear");
-
+        /// <summary>
+        /// Returns a list of keys in the storage area.
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<string>> GetKeys()
         {
             using var all = await JSRef!.CallAsync<JSObject>("get");
             var keys = JS.Call<List<string>>("Object.keys", all);
             return keys;
         }
-
+        /// <summary>
+        /// Sets the access level for the storage area.
+        /// </summary>
+        /// <param name="accessLevel"></param>
+        /// <returns></returns>
         public Task SetAccessLevel(string accessLevel) => JSRef!.CallVoidAsync("setAccessLevel", accessLevel);
 
         public async Task<T> Get<T>(string key)
