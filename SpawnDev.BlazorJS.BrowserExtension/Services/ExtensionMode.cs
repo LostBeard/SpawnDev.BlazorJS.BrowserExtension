@@ -18,16 +18,20 @@
         /// </summary>
         Background,
         /// <summary>
-        /// Running as a popup
+        /// Running as an extension page (chrome-extension:// or moz-extension://)
         /// </summary>
-        Popup,
-        /// <summary>
-        /// Running as an options invocation
-        /// </summary>
-        Options,
-        /// <summary>
-        /// Running as an invocation of an install event
-        /// </summary>
-        Installed,
+        ExtensionPage,
+        ///// <summary>
+        ///// Running as a popup
+        ///// </summary>
+        //Popup,
+        ///// <summary>
+        ///// Running as an options invocation
+        ///// </summary>
+        //Options,
+        ///// <summary>
+        ///// Running as an invocation of an install event
+        ///// </summary>
+        //Installed,
     }
 }

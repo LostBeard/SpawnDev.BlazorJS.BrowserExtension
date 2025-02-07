@@ -156,17 +156,21 @@ namespace SpawnDev.BlazorJS.BrowserExtension.Services
                 {
                     ret = ExtensionMode.Content;
                 }
-                else if (globalScope == GlobalScope.Window && ExtensionScheme && pageValue == "options")
+                //else if (globalScope == GlobalScope.Window && ExtensionScheme && pageValue == "options")
+                //{
+                //    ret = ExtensionMode.Options;
+                //}
+                //else if (globalScope == GlobalScope.Window && ExtensionScheme && pageValue == "popup")
+                //{
+                //    ret = ExtensionMode.Popup;
+                //}
+                //else if (globalScope == GlobalScope.Window && ExtensionScheme && pageValue == "installed")
+                //{
+                //    ret = ExtensionMode.Installed;
+                //}
+                else if (globalScope == GlobalScope.Window && ExtensionScheme)
                 {
-                    ret = ExtensionMode.Options;
-                }
-                else if (globalScope == GlobalScope.Window && ExtensionScheme && pageValue == "popup")
-                {
-                    ret = ExtensionMode.Popup;
-                }
-                else if (globalScope == GlobalScope.Window && ExtensionScheme && pageValue == "installed")
-                {
-                    ret = ExtensionMode.Installed;
+                    ret = ExtensionMode.ExtensionPage;
                 }
                 else
                 {

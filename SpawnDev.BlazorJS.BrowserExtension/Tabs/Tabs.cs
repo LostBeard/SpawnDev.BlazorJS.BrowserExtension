@@ -1,5 +1,4 @@
 ﻿using Microsoft.JSInterop;
-using System.Text.Json.Serialization;
 
 namespace SpawnDev.BlazorJS.BrowserExtension
 {
@@ -19,6 +18,13 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// </summary>
         public Tabs(IJSInProcessObjectReference _ref) : base(_ref) { }
         #region Methods
+        /// <summary>
+        /// Creates a new tab.
+        /// </summary>
+        /// <param name="createProperties"></param>
+        /// <returns></returns>
+        public Task<Tab> Create(CreateTabProperties createProperties) => JSRef!.CallAsync<Tab>("create", createProperties);
+
         /// <summary>
         /// Retrieves details about the specified tab.
         /// </summary>
