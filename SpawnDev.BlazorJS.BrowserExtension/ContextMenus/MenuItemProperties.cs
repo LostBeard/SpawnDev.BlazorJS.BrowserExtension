@@ -8,7 +8,7 @@ namespace SpawnDev.BlazorJS.BrowserExtension
     /// https://developer.chrome.com/docs/extensions/reference/api/contextMenus#type-CreateProperties<br/>
     /// https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/menus/create#createproperties
     /// </summary>
-    public class CreateProperties
+    public class MenuItemProperties
     {
         /// <summary>
         /// string. String describing an action that should be taken when the user clicks the item. The recognized values are:<br/>

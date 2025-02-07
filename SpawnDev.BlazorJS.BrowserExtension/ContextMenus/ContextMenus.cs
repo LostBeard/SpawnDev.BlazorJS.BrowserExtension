@@ -17,14 +17,14 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// </summary>
         /// <param name="createProperties"></param>
         /// <returns>The ID of the newly created item. (number | string)</returns>
-        public JSObject Create(CreateProperties createProperties) => JSRef!.Call<JSObject>("create", createProperties);
+        public JSObject Create(MenuItemProperties createProperties) => JSRef!.Call<JSObject>("create", createProperties);
         /// <summary>
         /// Creates a new context menu item. If an error occurs during creation, it may not be detected until the creation callback fires; details will be in runtime.lastError.
         /// </summary>
         /// <param name="createProperties"></param>
         /// <param name="callback"></param>
         /// <returns>The ID of the newly created item. (number | string)</returns>
-        public JSObject Create(CreateProperties createProperties, ActionCallback callback) => JSRef!.Call<JSObject>("create", createProperties, callback);
+        public JSObject Create(MenuItemProperties createProperties, ActionCallback callback) => JSRef!.Call<JSObject>("create", createProperties, callback);
         /// <summary>
         /// Removes a context menu item.
         /// </summary>
@@ -62,26 +62,26 @@ namespace SpawnDev.BlazorJS.BrowserExtension
         /// <param name="menuItemId"></param>
         /// <param name="updateProperties"></param>
         /// <param name="callback"></param>
-        public void Update(string menuItemId, CreateProperties updateProperties, ActionCallback callback) => JSRef!.CallVoid("update", menuItemId, updateProperties, callback);
+        public void Update(string menuItemId, MenuItemProperties updateProperties, ActionCallback callback) => JSRef!.CallVoid("update", menuItemId, updateProperties, callback);
         /// <summary>
         /// Updates a previously created context menu item.
         /// </summary>
         /// <param name="menuItemId"></param>
         /// <param name="updateProperties"></param>
-        public void Update(string menuItemId, CreateProperties updateProperties) => JSRef!.CallVoid("update", menuItemId, updateProperties);
+        public void Update(string menuItemId, MenuItemProperties updateProperties) => JSRef!.CallVoid("update", menuItemId, updateProperties);
         /// <summary>
         /// Updates a previously created context menu item.
         /// </summary>
         /// <param name="menuItemId"></param>
         /// <param name="updateProperties"></param>
         /// <param name="callback"></param>
-        public void Update(int menuItemId, CreateProperties updateProperties, ActionCallback callback) => JSRef!.CallVoid("update", menuItemId, updateProperties, callback);
+        public void Update(int menuItemId, MenuItemProperties updateProperties, ActionCallback callback) => JSRef!.CallVoid("update", menuItemId, updateProperties, callback);
         /// <summary>
         /// Updates a previously created context menu item.
         /// </summary>
         /// <param name="menuItemId"></param>
         /// <param name="updateProperties"></param>
-        public void Update(int menuItemId, CreateProperties updateProperties) => JSRef!.CallVoid("update", menuItemId, updateProperties);
+        public void Update(int menuItemId, MenuItemProperties updateProperties) => JSRef!.CallVoid("update", menuItemId, updateProperties);
         /// <summary>
         /// Fired when a context menu item is clicked.
         /// </summary>
