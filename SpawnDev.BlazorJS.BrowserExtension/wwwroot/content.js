@@ -179,8 +179,12 @@ var initBlazorContent = async function () {
         });
         return ret;
     }
+    // below xrayWrapped check no longer works... check why
+    // use check for "moz-extension" in extension url instead for now
     var xrayWrapped = globalThis.window && globalThis !== globalThis.window && !globalThis.constructor.name;
-    if (xrayWrapped) {
+    var isMozilla = extensionAppBasePath.indexOf('moz-extension') === 0;
+    consoleLog('isMozilla', isMozilla)
+    if (isMozilla) {
         consoleLog("XrayWrapped SandBox detected. Patching window and globalThis. Fetch will also be patched.");
         // Bring the globalThis.constructor.name inline with Chrome extension content scripts
         globalThis.constructor.name = 'Window';
@@ -205,7 +209,7 @@ var initBlazorContent = async function () {
             // currently not modified. could cause issues if a relative path was used to create the Request object.
             resp = await fetchOrig(resource, options);
         }
-        if (xrayWrapped) {
+        if (xrayWrapped || isMozilla) {
             // In Firefox extension content mode, the object returned from Response.json is xraywrapped and will throw an exception if modified,
             // which Blazor will do when starting up.
             // To fix this return unwrapped version.
