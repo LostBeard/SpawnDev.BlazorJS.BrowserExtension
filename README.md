@@ -1,7 +1,7 @@
 
 # SpawnDev.BlazorJS.BrowserExtension
 
-This project is new and under active development. A Nuget package will be released soon.
+[![NuGet](https://img.shields.io/nuget/dt/SpawnDev.BlazorJS.BrowserExtension.svg?label=SpawnDev.BlazorJS.BrowserExtension)](https://www.nuget.org/packages/SpawnDev.BlazorJS.BrowserExtension)
 
 SpawnDev.BlazorJS.BrowserExtension adds the ability for Blazor WASM to run as a web browser Manifest V3 extension. Blazor can run in all extension contexts. Runs in content context (in page with any site), popup window, options window, and the background.
 
